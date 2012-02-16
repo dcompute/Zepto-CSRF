@@ -30,46 +30,42 @@
      * Retrieves the value of a cookie by the given key.
      *
      * @param key, (string) Name of the cookie to retrieve.
-     * @return Value of the given key or null.
+     * @return (string) Value of the given key or null.
     **/
     function getCookie (key) {
-        var value = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)');
-        
-        return (value.exec(document.cookie)) ? value[1] : null;
+        var result = (
+                new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)')
+            ).exec(document.cookie);
+
+        return result ? result[1] : null;
 
     }
 
     /*
-     * Checks whether or not a request is originating from ___
+     * Checks if our host matches the request's host.
      *
-     * @param url, (string) URL of...
-     * @return
+     * @param url, (string) URL of request.
+     * @return (boolean) Request is to origin.
     **/
     function sameOrigin (url) {
-        // url could be relative or scheme relative or absolute
+        // Url could be relative or scheme relative or absolute
         var sr_origin = '//' + document.location.host,
             origin = document.location.protocol + sr_origin;
 
         // Allow absolute or scheme relative URLs to same origin
-        return (
-                url == origin ||
-                url.slice(0, origin.length + 1
-            ) == origin + '/') ||
-            (
-                url == sr_origin ||
-                url.slice(0, sr_origin.length + 1
-            ) == sr_origin + '/') ||    
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
             // or any other URL that isn't scheme relative or absolute i.e relative.
             !(/^(\/\/|http:|https:).*/.test(url));
 
     }
 
     /*
-     * Extend Zepto's ajaxSetting.beforeSend method by setting an X-CSRFToken
-     * header on each request.
+     * Extend Zepto's AJAX beforeSend method by setting an X-CSRFToken on any
+     * 'unsafe' request methods.
     **/
     $.extend($.ajaxSettings, {
-        beforeSend : function (xhr, settings) {
+        beforeSend : function (xhr, settings) {console.log(settings);
             if (
                 !(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) &&
                 sameOrigin(settings.url)
