@@ -1,9 +1,7 @@
 /*
- * Zepto.csrf.js is freely distributable under the MIT license.
+ * Zepto.CSRF is freely distributable under the MIT license.
  *
- * @author Daniel Lacy <dan@daniellacy.com>
  * @version 1.1
- * @since 2011-10-19
  *
  * Copyright (c) 2011 Daniel Lacy (daniellacy.com)
  *
